@@ -6,56 +6,56 @@ const domains = [
     name: "BI and Visualization",
     icon: <BarChart3 className="h-6 w-6 text-blue-400 dark:text-blue-300" />,
     color: "bg-blue-100 dark:bg-blue-900",
-    link: "#",
+    // link: "#",
   },
   {
     id: 2,
     name: "Programming",
     icon: <Code className="h-6 w-6 text-green-400 dark:text-green-300" />,
     color: "bg-green-100 dark:bg-green-900",
-    link: "#",
+    // link: "#",
   },
   {
     id: 3,
     name: "IT Service Management",
     icon: <Clock className="h-6 w-6 text-purple-400 dark:text-purple-300" />,
     color: "bg-purple-100 dark:bg-purple-900",
-    link: "#",
+    // link: "#",
   },
   {
     id: 4,
     name: "Quality",
     icon: <Shield className="h-6 w-6 text-yellow-400 dark:text-yellow-300" />,
     color: "bg-yellow-100 dark:bg-yellow-900",
-    link: "#",
+    // link: "#",
   },
   {
     id: 5,
     name: "Business Management",
     icon: <BarChart3 className="h-6 w-6 text-red-400 dark:text-red-300" />,
     color: "bg-red-100 dark:bg-red-900",
-    link: "#",
+    // link: "#",
   },
   {
     id: 6,
     name: "Cybersecurity",
     icon: <Shield className="h-6 w-6 text-indigo-400 dark:text-indigo-300" />,
     color: "bg-indigo-100 dark:bg-indigo-900",
-    link: "#",
+    // link: "#",
   },
   {
     id: 7,
     name: "Cloud Computing",
     icon: <Cloud className="h-6 w-6 text-blue-400 dark:text-blue-300" />,
     color: "bg-blue-100 dark:bg-blue-900",
-    link: "#",
+    // link: "#",
   },
   {
     id: 8,
     name: "Data Science",
     icon: <Database className="h-6 w-6 text-purple-400 dark:text-purple-300" />,
     color: "bg-purple-100 dark:bg-purple-900",
-    link: "#",
+    // link: "#",
   },
 ];
 
@@ -81,7 +81,7 @@ export default function DomainsSection() {
   {domains.map((domain) => (
     <a
       key={domain.id}
-      href={domain.link}
+      // href={domain.link}
       className={`${domain.color} rounded-lg p-6 flex flex-col items-center justify-center text-center transition-transform hover:scale-105 hover:shadow-md dark:hover:shadow-lg`}
     >
       <div className="mb-4">{domain.icon}</div>

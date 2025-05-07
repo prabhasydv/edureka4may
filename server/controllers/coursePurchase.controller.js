@@ -848,12 +848,6 @@ export const verifyPayment = async (req, res) => {
 };
 
 
-
-
-
-
-
-
 // ------------------------------
 // 3. COURSE DETAIL WITH STATUS CHECK
 // ------------------------------

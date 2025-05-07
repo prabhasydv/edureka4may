@@ -110,7 +110,7 @@ const LectureTab = () => {
     <Card>
       <CardHeader className="flex justify-between">
         <div>
-          <CardTitle>Edit Lecture</CardTitle>
+          <CardTitle>Edit Curriculum</CardTitle>
           <CardDescription>
             Make changes and click save when done.
           </CardDescription>
@@ -121,7 +121,7 @@ const LectureTab = () => {
               removeLoading ? <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
               Please wait
-              </> : "Remove Lecture"
+              </> : "Remove curriculum"
             }
           </Button>
         </div>
@@ -166,7 +166,7 @@ const LectureTab = () => {
                 isLoading ? <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
                 Please wait
-                </> : "Update Lecture"
+                </> : "Update Curriculum"
               }
             
           </Button>

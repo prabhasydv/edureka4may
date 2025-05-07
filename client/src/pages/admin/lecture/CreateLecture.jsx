@@ -47,7 +47,7 @@ const CreateLecture = () => {
     <div className="flex-1 mx-10">
       <div className="mb-4">
         <h1 className="font-bold text-xl">
-          Let's add lectures, add some basic details for your new lecture
+          Let's add curriculum, add some basic details for your new curriculum
         </h1>
         <p className="text-sm">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Possimus,
@@ -78,17 +78,17 @@ const CreateLecture = () => {
                 Please wait
               </>
             ) : (
-              "Create lecture"
+              "Create curriculum"
             )}
           </Button>
         </div>
         <div className="mt-10">
           {lectureLoading ? (
-            <p>Loading lectures...</p>
+            <p>Loading curriculum...</p>
           ) : lectureError ? (
-            <p>Failed to load lectures.</p>
+            <p>Failed to load curriculum.</p>
           ) : lectureData.lectures.length === 0 ? (
-            <p>No lectures availabe</p>
+            <p>No curriculum availabe</p>
           ) : (
             lectureData.lectures.map((lecture, index) => (
               <Lecture

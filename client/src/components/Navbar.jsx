@@ -364,6 +364,8 @@ const Data = {
   },
 };
 
+const categories = Object.keys(Data);
+
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -493,39 +495,53 @@ const Navbar = () => {
                   </div>
 
                   {categories.map((category) => (
-                    <h3
+                    <div
                       key={category}
                       onClick={() => setSelectedCategory(category)}
-                      className={`cursor-pointer flex items-center gap-2 text-base font-medium transition-all duration-300 ${selectedCategory === category
-                          ? "text-blue-600 dark:text-blue-400 underline"
-                          : "text-gray-700 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-300"
-                        }`}
+                      className={`cursor-pointer flex items-center gap-2 text-base font-medium px-3 py-2 rounded-lg transition-all duration-300
+                           ${selectedCategory === category
+                          ? "bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400"
+                          : "hover:bg-gray-100 text-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"}`}
                     >
                       <span className="text-lg">{Data[category].icon}</span>
                       {category}
-                    </h3>
+                    </div>
                   ))}
                 </div>
 
                 {/* Right - Items */}
-                <div className="w-full md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {Data[selectedCategory]?.items.map((item, index) => (
-                    <a
-                      key={index}
-                      href={item.link}
-                      className="flex items-center gap-3 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
-                    >
-                      <img
-                        src={item.icon}
-                        alt={item.name}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-base text-gray-800 dark:text-gray-200 font-medium">
-                        {item.name}
-                      </span>
-                    </a>
-                  ))}
+                <div className="w-full md:w-3/4">
+                  {/* Title for Right Section */}
+                  <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h2 className="text-base font-semibold text-gray-600 dark:text-gray-300 tracking-wide uppercase">
+                        Certifications
+                      </h2>
+                    </div>
+                    <div className="w-20 h-[2px] bg-gray-500 dark:bg-blue-400 rounded-sm mt-2 mb-4"></div>
+                  </div>
+
+                  {/* Items Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {Data[selectedCategory]?.items.map((item, index) => (
+                      <a
+                        key={index}
+                        href={item.link}
+                        className="flex items-center gap-3 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+                      >
+                        <img
+                          src={item.icon}
+                          alt={item.name}
+                          className="w-5 h-5"
+                        />
+                        <span className="text-base text-gray-800 dark:text-gray-200 font-medium">
+                          {item.name}
+                        </span>
+                      </a>
+                    ))}
+                  </div>
                 </div>
+
               </div>
             </div>
           )}
@@ -657,131 +673,196 @@ const Navbar = () => {
 
 export default Navbar;
 
-// const MobileNavbar = ({ user }) => {
-//   const navigate = useNavigate();
-
-//   return (
-//     <Sheet>
-//       <SheetTrigger asChild>
-//         <Button
-//           size="icon"
-//           className="rounded-full hover:bg-gray-200"
-//           variant="outline"
-//         >
-//           <Menu />
-//         </Button>
-//       </SheetTrigger>
-//       <SheetContent className="flex flex-col">
-//         <SheetHeader className="flex flex-row items-center justify-between mt-2">
-//           <SheetTitle> <Link to="/" className="flex items-center">
-//             <img
-//               src={theeduocenlogo}
-//               alt="E-Learning Logo"
-//               className="h-10 w-auto object-contain"
-//             />
-//           </Link></SheetTitle>
-//           <DarkMode />
-//         </SheetHeader>
-//         <Separator className="mr-2" />
-//         <nav className="flex flex-col space-y-4">
-//           <Link to="/my-learning">My Learning</Link>
-//           <Link to="/profile">Edit Profile</Link>
-//           <Link to="/interview-preprations">Domain</Link>
-
-//           <Link to="/profile">Resources</Link>
-
-//           <p>Log out</p>
-//         </nav>
-//         {user?.role === "instructor" && (
-//           <SheetFooter>
-//             <SheetClose asChild>
-//               <Button type="submit" onClick={() => navigate("/admin/dashboard")}>Dashboard</Button>
-//             </SheetClose>
-//           </SheetFooter>
-//         )}
-//       </SheetContent>
-//     </Sheet>
-//   );
-// };
-
 const MobileNavbar = ({ user }) => {
   const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [logoutUser, { data, isSuccess }] = useLogoutUserMutation();
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const dropdownRef = useRef(null);
 
   const logoutHandler = async () => {
     await logoutUser();
     setOpen(false);
     navigate("/login");
   };
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button size="icon" className="rounded-full hover:bg-gray-200" variant="outline">
-          <Menu />
-        </Button>
-      </SheetTrigger>
-      <SheetContent className="flex flex-col">
-        <SheetHeader className="flex flex-row items-center justify-between mt-2">
-          <SheetTitle>
-            <Link to="/" className="flex items-center" onClick={() => setOpen(false)}>
-              <img src={theeduocenlogo} alt="E-Learning Logo" className="h-10 w-auto object-contain" />
-            </Link>
-          </SheetTitle>
-          <DarkMode />
-        </SheetHeader>
-        <Separator className="my-2" />
+    <>
+      <div className="flex justify-end px-2 ml-10" ref={dropdownRef}>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="sm:w-auto text-left px-3 sm:px-4 py-2 text-sm sm:text-base text-gray-700 dark:text-gray-200 font-medium bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 focus:outline-none border border-gray-300 dark:border-gray-600 shadow-md rounded-[0.5rem]"
+        >
+          <span className="truncate">All Courses</span>
+          <ChevronDownIcon
+            className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${isOpen ? "rotate-180" : ""}`}
+          />
+        </button>
 
-        <nav className="flex flex-col space-y-4">
-          <Link to="https://www.linkedin.com/company/theeduocean/?viewAsMember=true" onClick={() => setOpen(false)}>
-            LinkedIn
-          </Link>
-          <Link to="/Become-an-instructor" onClick={() => setOpen(false)}>
-            Become an Instructor
-          </Link>
-          <Link to="/interview-preprations" onClick={() => setOpen(false)}>
-            Interview Preparation
-          </Link>
-          <Link to="/interview-preprations" onClick={() => setOpen(false)}>
-            Project Help
-          </Link>
+        {/* Dropdown Menu */}
+        {isOpen && (
+          <div className="fixed top-[4rem] left-0 w-full z-40 px-4 sm:px-6 lg:px-10">
+            <div className="flex flex-col md:flex-row gap-6 max-w-screen-xl mx-auto px-6 py-6 bg-white dark:bg-gray-900 rounded-2xl shadow-xl ring-1 ring-gray-200 dark:ring-gray-800 transition-all duration-300 items-start">
 
-          {user ? (
-            <>
-              <Link to="/my-learning" onClick={() => setOpen(false)}>
-                My Learning
-              </Link>
-              <Link to="/profile" onClick={() => setOpen(false)}>
-                Edit Profile
-              </Link>
-              <button onClick={logoutHandler}>Log out</button>
+              {/* Left - Category List */}
+              {!selectedCategory && (
+                <div className="w-full md:w-1/4 space-y-3 border-r border-gray-300 dark:border-gray-700 pr-4 max-h-96 overflow-y-auto">
+                  <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h2 className="text-base font-semibold text-gray-600 dark:text-gray-300 tracking-wide uppercase">
+                        Categories
+                      </h2>
+                    </div>
+                    <div className="w-20 h-[2px] bg-gray-500 dark:bg-blue-400 rounded-sm mt-2 mb-4"></div>
+                  </div>
 
-              {user?.role === "instructor" && (
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setOpen(false);
-                    navigate("/admin/dashboard");
-                  }}
-                >
-                  Dashboard
-                </Button>
+                  {categories.map((category) => (
+                    <div
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`cursor-pointer flex items-center gap-2 text-base font-medium px-3 py-2 rounded-lg transition-all duration-300
+                    ${selectedCategory === category
+                          ? "bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400"
+                          : "hover:bg-gray-100 text-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"}`}
+                    >
+                      <span className="text-lg">{Data[category].icon}</span>
+                      {category}
+                    </div>
+                  ))}
+                </div>
               )}
-            </>
-          ) : (
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={() => { setOpen(false); navigate("/login"); }}>
-                Login
-              </Button>
-              <Button onClick={() => { setOpen(false); navigate("/login"); }}>
-                Signup
-              </Button>
+
+              {/* Right - Items */}
+              <div className="w-full md:w-3/4">
+                {/* Back Button */}
+                {selectedCategory && (
+                  <button
+                    onClick={() => setSelectedCategory(null)}
+                    className="mb-4 text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 focus:outline-none"
+                  >
+                    &larr; Back to Categories
+                  </button>
+                )}
+
+                {/* Title for Right Section */}
+                <div className="mb-4">
+                  <div className="flex items-center gap-2 mb-1">
+                    {/* <h2 className="text-base font-semibold text-gray-600 dark:text-gray-300 tracking-wide uppercase">
+                  {selectedCategory ? "Certifications" : "Select a Category"}
+                </h2> */}
+                  </div>
+                  {/* <div className="w-20 h-[2px] bg-gray-500 dark:bg-blue-400 rounded-sm mt-2 mb-4"></div> */}
+                </div>
+
+                {/* Items Grid */}
+                {selectedCategory ? (
+                  <div className="max-h-80 overflow-y-auto"> {/* Scrollable Container */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {Data[selectedCategory]?.items.map((item, index) => (
+                        <a
+                          key={index}
+                          href={item.link}
+                          className="flex items-center gap-3 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+                        >
+                          <img
+                            src={item.icon}
+                            alt={item.name}
+                            className="w-5 h-5"
+                          />
+                          <span className="text-base text-gray-800 dark:text-gray-200 font-medium">
+                            {item.name}
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+
             </div>
-          )}
-        </nav>
-      </SheetContent>
-    </Sheet>
+          </div>
+        )}
+      </div>
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
+          <Button size="icon" className="rounded-full hover:bg-gray-200" variant="outline">
+            <Menu />
+          </Button>
+        </SheetTrigger>
+        <SheetContent className="flex flex-col">
+          <SheetHeader className="flex flex-row items-center justify-between mt-2">
+            <SheetTitle>
+              <Link to="/" className="flex items-center" onClick={() => setOpen(false)}>
+                <img src={theeduocenlogo} alt="E-Learning Logo" className="h-10 w-auto object-contain" />
+              </Link>
+            </SheetTitle>
+            <DarkMode />
+          </SheetHeader>
+          <Separator className="my-2" />
+
+          <nav className="flex flex-col space-y-4">
+            <Link to="https://www.linkedin.com/company/theeduocean/?viewAsMember=true" onClick={() => setOpen(false)}>
+              LinkedIn
+            </Link>
+            <Link to="/Become-an-instructor" onClick={() => setOpen(false)}>
+              Become an Instructor
+            </Link>
+            <Link to="/interview-preprations" onClick={() => setOpen(false)}>
+              Interview Preparation
+            </Link>
+            <Link to="/interview-preprations" onClick={() => setOpen(false)}>
+              Project Help
+            </Link>
+
+            {user ? (
+              <>
+                <Link to="/my-learning" onClick={() => setOpen(false)}>
+                  My Learning
+                </Link>
+                <Link to="/profile" onClick={() => setOpen(false)}>
+                  Edit Profile
+                </Link>
+                <button onClick={logoutHandler}>Log out</button>
+
+                {user?.role === "instructor" && (
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setOpen(false);
+                      navigate("/admin/dashboard");
+                    }}
+                  >
+                    Dashboard
+                  </Button>
+                )}
+              </>
+            ) : (
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => { setOpen(false); navigate("/login"); }}>
+                  Login
+                </Button>
+                <Button onClick={() => { setOpen(false); navigate("/login"); }}>
+                  Signup
+                </Button>
+              </div>
+            )}
+          </nav>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 };
+
 
